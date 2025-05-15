@@ -1,0 +1,231 @@
+/* ====================================================== */
+/* --- popup.css (Final - UI & Drag/Drop Fixes) --- */
+/* ====================================================== */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    width: 370px;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #212529;
+    user-select: none;
+}
+
+.container {
+    padding: 10px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #007bff;
+    white-space: nowrap;
+}
+
+.search-input {
+    padding: 5px 8px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    font-size: 0.85em;
+    flex-grow: 1;
+    margin: 0 8px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.search-input:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+#settingsButton {
+    background: none;
+    border: none;
+    font-size: 1.3em;
+    cursor: pointer;
+    padding: 3px;
+    color: #6c757d;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+#settingsButton:hover {
+    color: #007bff;
+    background-color: #e9ecef;
+}
+
+.usage-limit-section {
+    font-size: 0.8em;
+    color: #495057;
+    text-align: center;
+    padding: 5px 0 10px 0;
+    margin-bottom: 8px;
+    background-color: #e9ecef;
+    border-radius: 0.2rem;
+}
+.usage-limit-section p {
+    margin: 0;
+}
+
+.upgrade-section {
+    background-color: #e7f3ff;
+    border: 1px solid #b3d7ff;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    border-radius: 0.25rem;
+    text-align: center;
+}
+
+.upgrade-section p {
+    margin: 0 0 6px 0;
+    font-size: 0.85em;
+    color: #0056b3;
+}
+
+#upgradeButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: 500;
+    transition: background-color 0.15s ease-in-out;
+}
+#upgradeButton:hover {
+    background-color: #0056b3;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 8px 0;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #6c757d;
+    transition: border-color 0.2s ease, color 0.2s ease;
+    text-align: center;
+}
+.tab-button.active {
+    border-bottom-color: #007bff;
+    color: #007bff;
+}
+.tab-button:hover:not(.active) {
+    color: #0056b3;
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 240px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+}
+
+li {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85em;
+    transition: background-color 0.15s ease;
+    min-height: 20px;
+    position: relative;
+    cursor: default;
+}
+li[draggable="true"] {
+    cursor: grab;
+}
+li.dragging {
+    opacity: 0.4;
+    background: #d1e7ff;
+    cursor: grabbing !important;
+}
+.drop-indicator {
+    height: 3px;
+    background-color: #007bff;
+    margin: -1.5px 0;
+    border-radius: 1px;
+}
+
+li:last-child { border-bottom: none; }
+li:hover { background-color: #f1f3f5; }
+li.placeholder { color: #6c757d; font-style: italic; text-align: center; cursor: default; background-color: transparent; padding: 15px;}
+li.placeholder:hover { background-color: transparent; }
+
+.item-text {
+    flex-grow: 1;
+    margin-right: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.4;
+    user-select: none;
+}
+
+.item-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: auto;
+    padding-left: 5px;
+    background-color: inherit;
+    position: relative;
+    z-index: 1;
+}
+.item-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin-left: 4px;
+    padding: 2px;
+    color: #6c757d;
+    border-radius: 0.2rem;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+.item-actions button:hover {
+    color: #007bff;
+    background-color: #e9ecef;
+}
+
+.limit-message {
+    font-size: 0.8em;
+    color: #6c757d;
+    text-align: center;
+    margin-top: 8px;
+    padding: 6px;
+    background-color: #f1f3f5;
+    border-radius: 0.25rem;
+    display: none;
+}
+
+ul::-webkit-scrollbar { width: 7px; }
+ul::-webkit-scrollbar-track { background: #f8f9fa; border-radius: 10px; }
+ul::-webkit-scrollbar-thumb { background: #adb5bd; border-radius: 10px; }
+ul::-webkit-scrollbar-thumb:hover { background: #6c757d; }
