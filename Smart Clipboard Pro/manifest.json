@@ -1,0 +1,66 @@
+{
+  "manifest_version": 3,
+  "name": "Smart Clipboard Pro",
+  "version": "5.2.0",
+  "description": "Advanced clipboard manager with unlimited history, smart snippets, auto-backup and enhanced features!",
+  "permissions": [
+    "storage",
+    "clipboardRead",
+    "clipboardWrite",
+    "contextMenus",
+    "notifications",
+    "alarms",
+    "offscreen",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://api.lemonsqueezy.com/*",
+    "http://localhost:3000/*"
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "Smart Clipboard Pro"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "options_page": "settings/settings.html",
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "offscreen/offscreen.html",
+        "onboarding.html",
+        "onboarding.js",
+        "onboarding.css"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "smart-clipboard-pro@litextools",
+      "strict_min_version": "115.0"
+    }
+  }
+}
+
