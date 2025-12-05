@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Clipboard Pro</title>
+    <link rel="stylesheet" href="./popup.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-icon" aria-hidden="true">📋</div>
+                    <div class="logo-text">
+                        <div class="logo-title">Smart Clipboard Pro</div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn upgrade-header-btn" id="upgradeBtn" title="Upgrade to Pro">
+                        <span class="header-chip" aria-hidden="true">PRO</span>
+                        <span class="sr-only">Open upgrade options</span>
+                    </button>
+                    <button class="header-btn auto-toggle-btn" id="autoSaveToggle" title="Pause auto-save" aria-pressed="true">
+                        <span class="auto-toggle-icon" aria-hidden="true">▶</span>
+                        <span class="auto-toggle-label">Auto</span>
+                        <span class="sr-only">Toggle automatic saving</span>
+                    </button>
+                    <button id="addSnippetBtn" class="header-btn" title="Add Snippet">＋</button>
+                    <button class="header-btn" id="settingsBtn" title="Settings">
+                        <span class="icon-text" aria-hidden="true">⚙</span>
+                        <span class="sr-only">Settings</span>
+                    </button>
+                    <button class="header-btn" id="themeToggle" title="Toggle Theme" aria-label="Toggle theme">
+                        <span class="theme-icon" aria-hidden="true">☀</span>
+                        <span class="sr-only">Toggle theme</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-body">
+            <section class="search-row">
+                <div class="search-container">
+                    <span class="search-icon" aria-hidden="true">🔍</span>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search clipboard history...">
+                </div>
+                <div id="usageSummary" class="usage-summary"></div>
+            </section>
+
+            <div id="freeUserBanner" class="free-user-banner" style="display: none;">
+                <div class="banner-content">
+                    <span class="banner-text">Free: limited history, pins, snippets. <strong>Upgrade to Pro</strong> for unlimited!</span>
+                    <div class="banner-buttons">
+                        <button class="banner-upgrade-btn" id="bannerUpgradeBtn">Upgrade</button>
+                        <button class="banner-dismiss" id="bannerDismissBtn" title="Hide message">×</button>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="tabs" aria-label="Clipboard sections">
+                <button class="tab-btn active" data-tab="history">
+                    <span class="tab-icon" aria-hidden="true">🗒</span>
+                    <span class="tab-label">History</span>
+                    <span class="tab-counter" id="historyTabCounter"></span>
+                </button>
+                <button class="tab-btn" data-tab="pinned">
+                    <span class="tab-icon" aria-hidden="true">📌</span>
+                    <span class="tab-label">Pinned</span>
+                    <span class="tab-counter" id="pinnedTabCounter"></span>
+                </button>
+                <button class="tab-btn" data-tab="snippets">
+                    <span class="tab-icon" aria-hidden="true">✂</span>
+                    <span class="tab-label">Snippets</span>
+                    <span class="tab-counter" id="snippetsTabCounter"></span>
+                </button>
+                <button class="tab-btn" data-tab="top">
+                    <span class="tab-icon" aria-hidden="true">🏆</span>
+                    <span class="tab-label">Top 10</span>
+                    <span class="tab-counter" id="topTabCounter"></span>
+                </button>
+            </nav>
+
+            <div class="tab-panels">
+                <section id="historyTab" class="tab-content active" aria-label="History">
+                    <div id="historyList" class="clipboard-list"></div>
+                    <div id="historyEmpty" class="empty-state hidden">
+                        <div class="empty-icon" aria-hidden="true">🗒</div>
+                        <div class="empty-title">No History</div>
+                        <div class="empty-subtitle">Start copying texts to see them here</div>
+                    </div>
+                </section>
+
+                <section id="pinnedTab" class="tab-content" aria-label="Pinned">
+                    <div id="pinnedList" class="clipboard-list"></div>
+                    <div id="pinnedEmpty" class="empty-state hidden">
+                        <div class="empty-icon" aria-hidden="true">📌</div>
+                        <div class="empty-title">No Pinned Items</div>
+                        <div class="empty-subtitle">Click the pin icon to save texts</div>
+                    </div>
+                </section>
+
+                <section id="snippetsTab" class="tab-content" aria-label="Snippets">
+                    <div id="snippetsList" class="clipboard-list"></div>
+                    <div id="snippetsEmpty" class="empty-state hidden">
+                        <div class="empty-state-icon" aria-hidden="true">✂</div>
+                        <div class="empty-state-title">No Snippets Yet</div>
+                        <div class="empty-state-description">Create reusable text snippets for quick access. Use a keyword to trigger them.</div>
+                        <button id="addSnippetBtn_empty" class="btn-primary">Create Your First Snippet</button>
+                    </div>
+                </section>
+
+                <section id="topTab" class="tab-content" aria-label="Top 10">
+                    <div class="section-header">
+                        <div class="section-title">Top 10 most copied</div>
+                        <div class="section-subtitle">Sorted by times copied</div>
+                    </div>
+                    <div id="topList" class="clipboard-list"></div>
+                    <div id="topEmpty" class="empty-state hidden">
+                        <div class="empty-icon" aria-hidden="true">🏆</div>
+                        <div class="empty-title">No top items yet</div>
+                        <div class="empty-subtitle">Copy items multiple times to see them here</div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <div id="loadingIndicator" class="loading-indicator">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="toastContainer"></div>
+
+    <script type="module" src="./main.js"></script>
+
+    <div id="snippetEditModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Edit Snippet</h2>
+            <input type="hidden" id="editSnippetId">
+            <div class="form-group">
+                <label for="editSnippetKeyword">Keyword:</label>
+                <input type="text" id="editSnippetKeyword" placeholder="e.g., sig">
+            </div>
+            <div class="form-group">
+                <label for="editSnippetText">Text:</label>
+                <textarea id="editSnippetText" rows="5" placeholder="Enter your snippet text..."></textarea>
+            </div>
+            <button id="saveSnippetChangesBtn">Save Changes</button>
+        </div>
+    </div>
+
+    <div id="clipboardEditModal" class="modal" style="display: none;">
+        <div class="modal-content wide-modal">
+            <span class="close-btn" id="closeClipboardEditModal">&times;</span>
+            <h2>Edit Clipboard Item</h2>
+            <input type="hidden" id="editClipboardId">
+            <input type="hidden" id="editClipboardType">
+            <div class="form-group">
+                <label for="editClipboardEmoji">Emoji:</label>
+                <div class="emoji-quick-row">
+                    <input type="text" id="editClipboardEmoji" class="emoji-input compact" maxlength="4" placeholder="Paste emoji" autocomplete="off">
+                    <button type="button" id="toggleEmojiPopover" class="emoji-chip" aria-haspopup="true" aria-expanded="false" aria-controls="emojiSuggestions">&#128522; Pick</button>
+                    <button type="button" id="clearEmojiBtn" class="emoji-chip danger" title="Remove emoji">&#215; Clear</button>
+                </div>
+                <div class="emoji-suggestions emoji-popover" id="emojiSuggestions" role="listbox" aria-hidden="true">
+                    <button type="button" class="emoji-option" data-emoji-value="&#x2728;">&#x2728;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F525;">&#x1F525;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4A1;">&#x1F4A1;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4CC;">&#x1F4CC;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x26A1;">&#x26A1;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x2705;">&#x2705;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4DD;">&#x1F4DD;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4CE;">&#x1F4CE;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F680;">&#x1F680;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F9E0;">&#x1F9E0;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F3AF;">&#x1F3AF;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4AC;">&#x1F4AC;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F587;">&#x1F587;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4E3;">&#x1F4E3;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4BB;">&#x1F4BB;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F310;">&#x1F310;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4CA;">&#x1F4CA;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F5C2;">&#x1F5C2;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F516;">&#x1F516;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F48E;">&#x1F48E;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F389;">&#x1F389;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x2764;">&#x2764;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F501;">&#x1F501;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F60A;">&#x1F60A;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4AF;">&#x1F4AF;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F44D;">&#x1F44D;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4AA;">&#x1F4AA;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4B0;">&#x1F4B0;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F947;">&#x1F947;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F9F8;">&#x1F9F8;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F308;">&#x1F308;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4F1;">&#x1F4F1;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F3C6;">&#x1F3C6;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4C8;">&#x1F4C8;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4AB;">&#x1F4AB;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F381;">&#x1F381;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F393;">&#x1F393;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4DA;">&#x1F4DA;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F48C;">&#x1F48C;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4B8;">&#x1F4B8;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x272A;">&#x272A;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F44C;">&#x1F44C;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x2615;">&#x2615;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4A7;">&#x1F4A7;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F504;">&#x1F504;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F31F;">&#x1F31F;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4A5;">&#x1F4A5;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F9E1;">&#x1F9E1;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x2708;">&#x2708;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F6F8;">&#x1F6F8;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F3A8;">&#x1F3A8;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F3CA;">&#x1F3CA;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F4A8;">&#x1F4A8;</button>
+                    <button type="button" class="emoji-option" data-emoji-value="&#x1F680;">&#x1F680;</button>
+                </div>
+            </div>
+            <div class="form-group inline">
+                <div class="form-field">
+                    <label for="editClipboardLanguage">Language / label (optional):</label>
+                    <small class="field-hint">Up to 20 characters, shown as a small tag.</small>
+                    <input type="text" id="editClipboardLanguage" maxlength="20" placeholder="e.g., JS, SQL, email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="editClipboardText">Text:</label>
+                <small class="field-hint">Edit the clipboard content directly below.</small>
+                <textarea id="editClipboardText" rows="6" placeholder="Update the saved text..."></textarea>
+                <div class="char-count" id="editClipboardCharCount">0 chars</div>
+            </div>
+            <div class="modal-actions">
+                <button id="cancelClipboardEditBtn" type="button">Cancel</button>
+                <button id="saveClipboardChangesBtn" class="btn-primary" type="button">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
